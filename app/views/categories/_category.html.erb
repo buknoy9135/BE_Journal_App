@@ -1,0 +1,7 @@
+<li>
+  <%= link_to category_path(category) do %>
+    <strong><%= category.category_name %></strong><br>
+  <% end %> 
+  <p><%= category.description %></p>
+  <%= link_to 'View', category_path(category) %>  
+</li> 

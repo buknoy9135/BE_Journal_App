@@ -1,0 +1,18 @@
+<h2>Category Details</h2>
+
+<p>
+  <strong>Name:</strong><br>
+  <%= @category.category_name %>
+</p>
+
+<p>
+  <strong>Description:</strong><br>
+  <%= @category.description %>
+</p>
+
+<%= link_to 'Edit', edit_category_path(@category) %>
+<%= link_to "Destroy", category_path(@category), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %>
+<%= link_to 'Back to Dashboard', categories_path %>

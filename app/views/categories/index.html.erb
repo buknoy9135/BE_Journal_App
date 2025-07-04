@@ -1,2 +1,7 @@
-<h1>Welcome User</h1>
+<h1>Welcome "<%= current_user.first_name%>"</h1>
 <p>Here are your tasks for the day:</p>
+
+<h2>Categories</h2>
+<%= render current_user.categories %>
+
+<%= link_to 'New Category', new_category_path %>
