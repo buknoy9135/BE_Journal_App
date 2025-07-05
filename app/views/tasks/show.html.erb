@@ -1,0 +1,13 @@
+<h2><%= @task.task_name %></h2>
+
+<p><strong>Description:</strong> <%= @task.description %></p>
+<p><strong>Due date:</strong> <%= @task.due_date || "None" %></p>
+<p><strong>Priority:</strong> <%= @task.priority || "N/A" %></p>
+
+<%= link_to "Edit", edit_category_task_path(@category, @task) %> |
+<%= link_to "Delete", category_task_path(@category, @task), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %> |
+<%= link_to "Back to Tasks", category_tasks_path(@category) %> |
+<%= link_to 'Back to Dashboard', categories_path %>

@@ -1,0 +1,34 @@
+<tr>
+  <td>
+    <strong><%= task.task_name %></strong>
+  </td>
+  <td>
+    <p><%= task.description %></p>
+  </td>
+  <td>
+    <p><%= task.due_date %></p>
+  </td>
+  <td>
+    <p><%= task.priority %></p>
+  </td>
+  <td>
+    <p><% if task.is_completed? %>✅ Completed<% else %>❌ Not yet completed<% end %></p>
+  </td>
+  <td>
+    <%= link_to '🔍', category_task_path(task.category, task) %>
+    <%= link_to '✏️', edit_category_task_path(task.category, task) %>
+    <%= link_to '🗑️', category_task_path(task.category, task), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %>
+  </td>
+</tr>
+
+<!--
+<li>
+  <strong><%= task.task_name %></strong>
+  (<%= task.category.category_name %>)
+  <% if task.is_completed? %>✅<% else %>❌<% end %>
+  – <%= link_to "View", category_task_path(task.category, task) %>
+</li>
+-->

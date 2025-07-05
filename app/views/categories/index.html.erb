@@ -1,7 +1,22 @@
-<h1>Welcome "<%= current_user.first_name%>"</h1>
+<%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave?" } %>
+
+<h1>Welcome, <%= current_user.first_name%>!</h1>
 <p>Here are your tasks for the day:</p>
 
-<h2>Categories</h2>
-<%= render current_user.categories %>
+<% if @todays_tasks.any? %>
+  <ul>
+    <% @todays_tasks.each do |task| %>
+      <li>
+        <strong><%= task.task_name %></strong> (from "<%= task.category.category_name %>")
+        <% if task.is_completed? %> ✅ <% else %> ❌ <% end %>
+        <%= link_to 'View', category_task_path(task.category, task) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No tasks due today 🎉</p>
+<% end %>
+
+<%= render current_user.categories %> 
 
 <%= link_to 'New Category', new_category_path %>
