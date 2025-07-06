@@ -21,14 +21,19 @@
                     turbo_confirm: "Are you sure?"
                   } %>
     </td>
-  <tr>
-    <th>Task</th>
-    <th>Description</th>
-    <th>Due Date</th>
-    <th>Priority</th>
-    <th>Status</th>
-    <th>Actions</th>
-  </tr>
-    <%= render category.tasks, category: category %>
-  </tr>
-  </table>
+  <% if category.tasks.any? %>
+      <tr>
+        <th>Task</th>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      <%= render category.tasks, category: category %>
+    <% else %>
+      <tr>
+        <td colspan="6">No task yet for this category</td>
+      </tr>
+    <% end %>
+</table>
