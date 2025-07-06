@@ -1,22 +1,60 @@
-<%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave?" } %>
+<div class="container">
+  <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave?" }, class: "btn btn-outline-danger text-decoration-none float-end" %>
+</div>
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center flex-wrap ps-3">
+    <div>
+      <%= image_tag "logo2.png", alt: "Logo", width: 250 %>
+    </div>
+    <div class="flex-grow-1 ms-auto ps-5">
+      <h1>Welcome, <%= current_user.first_name%>!</h1>
+      <% if @todays_tasks.any? %>
+      <p class="fw-normal" style="animation: glowText 1.5s infinite;">You have task(s) due today, <%= Date.today.strftime("%B %d, %Y") %>:</p>
+    
+      <style>
+        @keyframes glowText {
+          0%   { color: #000; }
+          50%  { color: red; }
+          100% { color: #000; }
+        }
+      </style>
+      <ul class="list-group list-group-flush">
+  <% @todays_tasks.each do |task| %>
+    <li class="list-group-item py-1 px-2 border-0">
+      <div class="d-flex justify-content-between align-items-start w-100" style="max-width: 300px;">
+        <div class="small">
+          <%= link_to category_task_path(task.category, task), class: "text-decoration-none fw-medium" do %>
+            <strong><%= task.task_name %></strong>
+          <% end %>
+          <span class="text-muted">from "<%= task.category.category_name %>"</span>
+        </div>
+        <div class="text-end" style="min-width: 120px;">
+          <% if task.is_completed? %>
+            <span class="badge text-bg-success">complete</span>
+          <% else %>
+            <span class="badge text-bg-danger">not complete</span>
+          <% end %>
+        </div>
+      </div>
+    </li>
+  <% end %>
+</ul>
 
-<h1>Welcome, <%= current_user.first_name%>!</h1>
-<p>Here are your tasks for the day:</p>
 
-<% if @todays_tasks.any? %>
-  <ul>
-    <% @todays_tasks.each do |task| %>
-      <li>
-        <strong><%= task.task_name %></strong> (from "<%= task.category.category_name %>")
-        <% if task.is_completed? %> ✅ <% else %> ❌ <% end %>
-        <%= link_to 'View', category_task_path(task.category, task) %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No tasks due today 🎉</p>
-<% end %>
+      <% else %>
+        <p>No tasks due today 🎉</p>
+      <% end %>
+    </div>
+    
+  </div>
+</div>
 
-<%= render current_user.categories %> 
+<div class="container pt-4 mt-4">
+  <div colspan="6" class="text-start"><%= link_to 'Create New Category', new_category_path, class: "text-decoration-none btn btn-info btn-md" %></div>
+</div>
 
-<%= link_to 'New Category', new_category_path %>
+<div class="container mt-4">
+  <div class="row row-cols-1 row-cols-md-1 g-4">
+    <%= render current_user.categories %>
+  </div>
+</div>

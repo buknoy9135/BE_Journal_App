@@ -1,39 +1,52 @@
-<table>
-  <tr>
-    <th>Category</th>
-    <th>Details</th>
-    <th>Actions</th>
-  </tr>
-  <tr>
-    <td>
-      <%= link_to category_path(category) do %>
-        <strong><%= category.category_name %></strong><br>
+<div class="col">
+  <div class="card h-100 d-flex flex-column">
+    <div class="card-body flex-grow-1 d-flex flex-column">
+      <h4 class="card-title">
+        <%= link_to category.category_name, category_path(category), class: "text-decoration-none" %>
+      </h4>
+      <p class="card-text"><%= category.description %></p>
+
+      <% if category.tasks.any? %>
+        <div class="table-responsive flex-grow-1">
+          <table class="table table-sm align-middle text-nowrap">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 20%;">Task</th>
+                <th style="width: 30%;">Description</th>
+                <th style="width: 15%;">Due</th>
+                <th style="width: 10%;">Priority</th>
+                <th style="width: 15%;">Status</th>
+                <th style="width: 15%;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render category.tasks, category: category %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6" class="text-start">
+                  <%= link_to 'New Task', new_category_task_path(category), class: "btn btn-primary btn-sm" %>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      <% else %>
+        <p class="text-muted mb-0">No tasks yet</p>
       <% end %>
-    </td>
-    <td>
-      <p><%= category.description %></p>
-    </td>
-    <td>
-      <%= link_to '🔍', category_path(category) %> |
-      <%= link_to '✏️', edit_category_path(category) %> |
-      <%= link_to '🗑️', category_path(category), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } %>
-    </td>
-  <% if category.tasks.any? %>
-      <tr>
-        <th>Task</th>
-        <th>Description</th>
-        <th>Due Date</th>
-        <th>Priority</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-      <%= render category.tasks, category: category %>
-    <% else %>
-      <tr>
-        <td colspan="6">No task yet for this category</td>
-      </tr>
-    <% end %>
-</table>
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+      <div>
+        <%= link_to 'View', category_path(category), class: "btn btn-outline-primary btn-sm" %>
+        <%= link_to 'Edit', edit_category_path(category), class: "btn btn-outline-secondary btn-sm" %>
+        <%= link_to 'Delete', category_path(category),
+                    method: :delete, data: {
+                        turbo_method: :delete,
+                        turbo_confirm: "Are you sure?"
+                      },
+                    class: "btn btn-outline-danger btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>

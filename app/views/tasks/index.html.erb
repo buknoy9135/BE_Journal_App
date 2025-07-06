@@ -1,16 +1,20 @@
 <h1>All Tasks</h1>
 
-<table>
-  <tr>
-    <th>Task</th>
-    <th>Description</th>
-    <th>Due Date</th>
-    <th>Priority</th>
-    <th>Status</th>
-    <th>Actions</th>
-  </tr>
-  <%= render @tasks %>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Description</th>
+      <th>Due Date</th>
+      <th>Priority</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @tasks %>
+  </tbody>
 </table>
 
-<%= link_to 'Create New Task', new_category_task_path %> |
-<%= link_to 'Back to Dashboard', categories_path %>
+<%= link_to 'Create New Task', new_category_task_path, class: "text-decoration-none" %> |
+<%= link_to 'Back to Dashboard', categories_path, class: "text-decoration-none" %>

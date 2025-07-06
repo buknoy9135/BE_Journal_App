@@ -1,27 +1,35 @@
 <tr>
-  <td>
-    <%= link_to category_task_path(task.category, task) do %>
-      <strong><%= task.task_name %></strong>
+  <td class="text-truncate" style="max-width: 200px;">
+    <%= link_to category_task_path(task.category, task, length: 60), class: "text-decoration-none" do %>
+      <%= task.task_name %>
     <% end %>
   </td>
+  <td class="text-truncate" style="max-width: 200px;">
+  <span title="<%= task.description %>">
+    <%= truncate(task.description, length: 60) %>
+  </span>
+</td>
   <td>
-    <p><%= task.description %></p>
+    <%= task.due_date.present? ? task.due_date.strftime("%B %d, %Y") : "none" %>
   </td>
   <td>
-    <p><%= task.due_date %></p>
+    <%= task.priority %>
   </td>
   <td>
-    <p><%= task.priority %></p>
+    <% if task.is_completed? %> Completed<% else %> Not complete<% end %>
   </td>
   <td>
-    <p><% if task.is_completed? %>✅ Completed<% else %>❌ Not yet completed<% end %></p>
-  </td>
-  <td>
-    <%= link_to '🔍', category_task_path(task.category, task) %>
-    <%= link_to '✏️', edit_category_task_path(task.category, task) %>
-    <%= link_to '🗑️', category_task_path(task.category, task), data: {
+    <%= link_to category_task_path(task.category, task), class: "text-decoration-none" do %>
+      <i class="bi bi-eye fs-6"></i>
+    <% end %>
+    <%= link_to edit_category_task_path(task.category, task), class: "text-decoration-none" do %>
+      <i class="bi bi-pencil fs-6 text-warning"></i>
+    <% end %>
+    <%= link_to category_task_path(task.category, task),class: "text-decoration-none", data: {
                     turbo_method: :delete,
                     turbo_confirm: "Are you sure?"
-                  } %>
+                  } do %>
+      <i class="bi bi-trash fs-6 text-danger"></i>
+    <% end %>
   </td>
 </tr>
