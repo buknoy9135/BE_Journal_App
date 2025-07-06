@@ -1,6 +1,8 @@
 <tr>
   <td>
-    <strong><%= task.task_name %></strong>
+    <%= link_to category_task_path(task.category, task) do %>
+      <strong><%= task.task_name %></strong>
+    <% end %>
   </td>
   <td>
     <p><%= task.description %></p>
@@ -23,12 +25,3 @@
                   } %>
   </td>
 </tr>
-
-<!--
-<li>
-  <strong><%= task.task_name %></strong>
-  (<%= task.category.category_name %>)
-  <% if task.is_completed? %>✅<% else %>❌<% end %>
-  – <%= link_to "View", category_task_path(task.category, task) %>
-</li>
--->

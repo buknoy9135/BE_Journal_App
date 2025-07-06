@@ -29,7 +29,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to category_tasks_path(@category, @task), notice: "Task successfully updated."
+      redirect_to category_task_path(@category, @task), notice: "Task successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
