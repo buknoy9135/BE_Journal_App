@@ -6,7 +6,10 @@ class CategoriesController < ApplicationController
     @categories = current_user.categories
     @todays_tasks = Task.joins(:category)
                         .where(categories: { user_id: current_user.id })
-                        .where(due_date: Date.current)
+                        .where(due_date: Date.current, is_completed: false)
+    @overdue_tasks = Task.joins(:category)
+                         .where(categories: { user_id: current_user.id })
+                         .where("due_date < ? AND is_completed = ?", Date.current, false)
     @tasks = Task.joins(:category)
                     .where(categories: { user_id: current_user.id })
   end

@@ -1,60 +1,90 @@
-<div class="container">
-  <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave?" }, class: "btn btn-outline-danger text-decoration-none float-end" %>
-</div>
-<div class="container">
-  <div class="d-flex justify-content-between align-items-center flex-wrap ps-3">
-    <div>
-      <%= image_tag "logo2.png", alt: "Logo", width: 250 %>
-    </div>
-    <div class="flex-grow-1 ms-auto ps-5">
-      <h1>Welcome, <%= current_user.first_name%>!</h1>
-      <% if @todays_tasks.any? %>
-      <p class="fw-normal" style="animation: glowText 1.5s infinite;">You have task(s) due today, <%= Date.today.strftime("%B %d, %Y") %>:</p>
-    
-      <style>
-        @keyframes glowText {
-          0%   { color: #000; }
-          50%  { color: red; }
-          100% { color: #000; }
-        }
-      </style>
-      <ul class="list-group list-group-flush">
-  <% @todays_tasks.each do |task| %>
-    <li class="list-group-item py-1 px-2 border-0">
-      <div class="d-flex justify-content-between align-items-start w-100" style="max-width: 300px;">
-        <div class="small">
-          <%= link_to category_task_path(task.category, task), class: "text-decoration-none fw-medium" do %>
-            <strong><%= task.task_name %></strong>
-          <% end %>
-          <span class="text-muted">from "<%= task.category.category_name %>"</span>
-        </div>
-        <div class="text-end" style="min-width: 120px;">
-          <% if task.is_completed? %>
-            <span class="badge text-bg-success">complete</span>
+<div class="container-fluid">
+  <div class="row px-5 mx-5">
+    <div class="col-lg-3">
+      <div class="d-flex flex-column align-items-start pt-4" style="height: 100vh; overflow-y: auto;">
+        <h2 class="fw-bold px-3">Welcome, <%= current_user.first_name %>!</h2>
+        
+        <div class="w-100 px-3 mt-4 pt-4">
+          <h5 class="fw-bold glowing-text">Tasks Due Today – <%= Date.today.strftime("%B %d, %Y") %></h5>
+
+          <% if @todays_tasks.any? %>
+            <div class="d-flex flex-column gap-2 mt-2">
+              <% @todays_tasks.sort_by(&:priority).each do |task| %>
+                <div class="p-3 border rounded shadow-sm bg-light d-flex justify-content-between align-items-start">
+                  <div class="small pe-3">
+                    <%= link_to category_task_path(task.category, task), class: "text-decoration-none fw-semibold text-dark" do %>
+                      <strong><%= task.task_name %></strong>
+                    <% end %><br>
+                    <span class="text-muted">from "<%= task.category.category_name %>"</span>
+                  </div>
+                  <div class="text-end" style="min-width: 120px;">
+                    <span class="badge <%= task.is_completed? ? 'bg-success' : 'bg-danger' %>">
+                      <%= task.is_completed? ? 'complete' : 'not complete' %>
+                    </span>
+                    <div class="small text-muted">Priority: <span><%= task.priority %></span></div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
           <% else %>
-            <span class="badge text-bg-danger">not complete</span>
+            <p class="text-muted mt-2">No tasks due today 🎉</p>
           <% end %>
+        </div>
+
+        <div class="w-100 px-3 mt-4 pt-4">
+          <h5 class="fw-bold glowing-text">Overdue Tasks</h5>
+
+          <% if @overdue_tasks.any? %>
+            <div class="d-flex flex-column gap-2 mt-2">
+              <% @overdue_tasks.sort_by(&:priority).each do |task| %>
+                <div class="p-3 border rounded shadow-sm bg-light d-flex justify-content-between align-items-start">
+                  <div class="small pe-3">
+                    <%= link_to category_task_path(task.category, task), class: "text-decoration-none fw-semibold text-dark" do %>
+                      <strong><%= task.task_name %></strong>
+                    <% end %><br>
+                    <span class="text-muted">from "<%= task.category.category_name %>"</span>
+                  </div>
+                  <div class="text-end" style="min-width: 120px;">
+                    <span class="badge <%= task.is_completed? ? 'bg-success' : 'bg-danger' %>">
+                      <%= task.is_completed? ? 'complete' : 'not complete' %>
+                    </span>
+                    <div><span class="small text-muted"><%= task.due_date.strftime("%d-%b-%Y") %></span></div>
+                    <div class="small text-muted">Priority: <span><%= task.priority %></span></div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted mt-2">No overdue tasks 🎉</p>
+          <% end %>
+        </div>
+        <div class="px-3 mt-5 d-flex flex-column gap-3 align-items-start">
+          <%= link_to 'Create New Category', new_category_path, class: "btn btn-info btn-md" %>
+          <%= link_to "Sign out", destroy_user_session_path,
+                      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave?" },
+                      class: "btn btn-outline-danger btn-sm" %>
         </div>
       </div>
-    </li>
-  <% end %>
-</ul>
-
-
-      <% else %>
-        <p>No tasks due today 🎉</p>
-      <% end %>
     </div>
-    
+    <div class="col-lg-9">
+      <div class="row row-cols-1 row-cols-md-1 g-4">
+        <%= render current_user.categories %>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="container pt-4 mt-4">
-  <div colspan="6" class="text-start"><%= link_to 'Create New Category', new_category_path, class: "text-decoration-none btn btn-info btn-md" %></div>
-</div>
+    <style>
+      .glowing-text {
+        animation: glowText 1.5s infinite;
+      }
 
-<div class="container mt-4">
-  <div class="row row-cols-1 row-cols-md-1 g-4">
-    <%= render current_user.categories %>
+      @keyframes glowText {
+        0%   { color: #000; }
+        50%  { color: red; }
+        100% { color: #000; }
+      }
+    </style>
+    
   </div>
 </div>

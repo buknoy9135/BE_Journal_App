@@ -9,5 +9,10 @@
                     turbo_method: :delete,
                     turbo_confirm: "Are you sure?"
                   }, class: "text-decoration-none" %> |
+<%= link_to toggle_complete_category_task_path(@task.category, @task),
+            data: { turbo_method: :patch, turbo_confirm: "Are you sure?" },
+            class: "text-decoration-none ms-2" do %>
+  <%= @task.is_completed? ? 'Mark as Incomplete' : 'Mark as Complete' %> |
+<% end %>
 <%= link_to "Back to Tasks", category_tasks_path(@category), class: "text-decoration-none" %> |
 <%= link_to 'Back to Dashboard', categories_path, class: "text-decoration-none" %>

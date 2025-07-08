@@ -10,13 +10,17 @@
   </span>
 </td>
   <td>
-    <%= task.due_date.present? ? task.due_date.strftime("%B %d, %Y") : "none" %>
+    <%= task.due_date.present? ? task.due_date.strftime("%d-%b-%Y") : "none" %>
   </td>
   <td>
     <%= task.priority %>
   </td>
   <td>
-    <% if task.is_completed? %> Completed<% else %> Not complete<% end %>
+    <% if task.is_completed? %>
+      <span class="badge bg-success">Complete</span>
+    <% else %>
+      <span class="badge bg-danger">Not Complete</span>
+    <% end %>
   </td>
   <td>
     <%= link_to category_task_path(task.category, task), class: "text-decoration-none" do %>
@@ -30,6 +34,11 @@
                     turbo_confirm: "Are you sure?"
                   } do %>
       <i class="bi bi-trash fs-6 text-danger"></i>
+    <% end %>
+    <%= link_to toggle_complete_category_task_path(task.category, task),
+            data: { turbo_method: :patch, turbo_confirm: "Are you sure?" },
+            class: "text-decoration-none ms-2" do %>
+      <i class="bi <%= task.is_completed? ? 'bi-toggle-on text-success' : 'bi-toggle-off text-muted' %> fs-5"></i>
     <% end %>
   </td>
 </tr>

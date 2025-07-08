@@ -5,5 +5,10 @@ class Task < ApplicationRecord
 
   validates :task_name, presence: true, length: { minimum: 3 }
   validates :description, presence: true, length: { minimum: 3 }
-  validates :due_date, comparison: { greater_than_or_equal_to: Date.today }, allow_blank: true
+  validates :due_date,
+  comparison: { greater_than_or_equal_to: Date.today },
+  allow_blank: true,
+  on: :create
+  # if I want both create and update to restrict earlier date
+  # on: [:create, :update]
 end

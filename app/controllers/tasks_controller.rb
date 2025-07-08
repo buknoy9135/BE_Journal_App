@@ -40,6 +40,13 @@ class TasksController < ApplicationController
     redirect_to category_tasks_path(@category), notice: "Task successfully deleted."
   end
 
+  def toggle_complete
+    @task = @category.tasks.find(params[:id])
+    @task.update(is_completed: !@task.is_completed)
+    redirect_back fallback_location: category_tasks_path(@category), notice: "Task status updated."
+  end
+
+
   private
 
   def set_category

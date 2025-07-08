@@ -12,28 +12,24 @@
             <thead class="table-light">
               <tr>
                 <th style="width: 20%;">Task</th>
-                <th style="width: 30%;">Description</th>
+                <th style="width: 35%;">Description</th>
                 <th style="width: 15%;">Due</th>
                 <th style="width: 10%;">Priority</th>
-                <th style="width: 15%;">Status</th>
+                <th style="width: 10%;">Status</th>
                 <th style="width: 15%;">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <%= render category.tasks, category: category %>
+              <%= render category.tasks.order(:is_completed, :priority, :due_date), category: category %>
             </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="6" class="text-start">
-                  <%= link_to 'New Task', new_category_task_path(category), class: "btn btn-primary btn-sm" %>
-                </td>
-              </tr>
-            </tfoot>
           </table>
         </div>
       <% else %>
         <p class="text-muted mb-0">No tasks yet</p>
       <% end %>
+      <div colspan="6" class="text-end pe-4">
+                  <%= link_to 'New Task', new_category_task_path(category), class: "btn btn-primary btn-sm" %>
+                </div>
     </div>
 
     <div class="card-footer d-flex justify-content-between">
