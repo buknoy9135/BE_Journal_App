@@ -10,6 +10,26 @@
   <%= @category.description %>
 </p>
 
+<p>
+  <strong>Owner Name:</strong><br>
+  <%= "#{current_user.first_name} #{current_user.last_name}" %>
+</p>
+
+<p>
+  <strong>Owner email:</strong><br>
+  <%= current_user.email %>
+</p>
+
+<p>
+  <strong>Created on:</strong><br>
+  <%= @category.created_at.strftime("%B %d, %Y") %>
+</p>
+
+<p>
+  <strong>Last updated on:</strong><br>
+  <%= @category.updated_at.strftime("%B %d, %Y") %>
+</p>
+
 <% if @tasks.any? %>
   <h2>All Tasks</h2>
   <table>

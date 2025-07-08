@@ -26,9 +26,19 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <div class="position-fixed top-0 start-50 translate-middle-x mt-2 text-center z-3">
+      <% if notice %>
+        <div class="px-4 py-2 bg-light border border-success text-success rounded shadow-sm d-inline-block">
+          <%= notice %>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="px-4 py-2 bg-light border border-danger text-danger rounded shadow-sm d-inline-block">
+          <%= alert %>
+        </div>
+      <% end %>
+    </div>
+    <div class="mt-5 pt-5"><%= yield %></div>
 
     <!-- ✅ Bootstrap JS without integrity -->
 <script

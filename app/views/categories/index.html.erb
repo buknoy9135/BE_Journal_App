@@ -1,73 +1,72 @@
 <div class="container-fluid">
   <div class="row px-5 mx-5">
-    <div class="col-lg-3">
-      <div class="d-flex flex-column align-items-start pt-4" style="height: 100vh; overflow-y: auto;">
-        <h2 class="fw-bold px-3">Welcome, <%= current_user.first_name %>!</h2>
-        
-        <div class="w-100 px-3 mt-4 pt-4">
-          <h5 class="fw-bold glowing-text">Tasks Due Today – <%= Date.today.strftime("%B %d, %Y") %></h5>
-
-          <% if @todays_tasks.any? %>
-            <div class="d-flex flex-column gap-2 mt-2">
-              <% @todays_tasks.sort_by(&:priority).each do |task| %>
-                <div class="p-3 border rounded shadow-sm bg-light d-flex justify-content-between align-items-start">
-                  <div class="small pe-3">
-                    <%= link_to category_task_path(task.category, task), class: "text-decoration-none fw-semibold text-dark" do %>
-                      <strong><%= task.task_name %></strong>
-                    <% end %><br>
-                    <span class="text-muted">from "<%= task.category.category_name %>"</span>
+    <div class="col-lg-3 px-0">
+      <div class="border ms-3" style="top: 4rem; height: calc(100vh - 6rem); position: fixed; left: 15rem; width: 20%; overflow-y: auto; background: white; z-index: 1000;">
+        <div class="d-flex flex-column align-items-start pt-4 px-3">
+          <h2 class="fw-bold px-3">Welcome, <%= current_user.first_name %>!</h2>      
+          <div class="w-100 px-3 pt-4">
+            <h5 class="fw-bold glowing-text">Tasks due today – <%= Date.today.strftime("%B %d, %Y") %>:</h5>
+            <% if @todays_tasks.any? %>
+              <div style="max-height: 360px; overflow-y: auto;" class="d-flex flex-column gap-2 mt-2">
+                <% @todays_tasks.sort_by(&:priority).each do |task| %>
+                  <div class="p-3 border rounded shadow-sm bg-light d-flex justify-content-between align-items-start">
+                    <div class="small pe-3">
+                      <%= link_to category_task_path(task.category, task), class: "text-decoration-none fw-semibold text-dark" do %>
+                        <strong><%= task.task_name %></strong>
+                      <% end %><br>
+                      <span class="text-muted">from "<%= task.category.category_name %>"</span>
+                    </div>
+                    <div class="text-end" style="min-width: 120px;">
+                      <span class="badge <%= task.is_completed? ? 'bg-success' : 'text-bg-warning' %>">
+                        <%= task.is_completed? ? 'Complete' : 'In progress' %>
+                      </span>
+                      <div class="small text-muted">Priority: <span><%= task.priority %></span></div>
+                    </div>
                   </div>
-                  <div class="text-end" style="min-width: 120px;">
-                    <span class="badge <%= task.is_completed? ? 'bg-success' : 'bg-danger' %>">
-                      <%= task.is_completed? ? 'complete' : 'not complete' %>
-                    </span>
-                    <div class="small text-muted">Priority: <span><%= task.priority %></span></div>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-muted mt-2">No tasks due today 🎉</p>
+            <% end %>
+          </div>
+          <div class="w-100 px-3 pt-5">
+            <h5 class="fw-bold glowing-text">Overdue tasks:</h5>
+            <% if @overdue_tasks.any? %>
+              <div style="max-height: 430px; overflow-y: auto;" class="d-flex flex-column gap-2 mt-2">
+                <% @overdue_tasks.sort_by { |task| [task.priority_before_type_cast, task.due_date] }.each do |task| %>
+                  <div class="p-3 border rounded shadow-sm bg-light d-flex justify-content-between align-items-start">
+                    <div class="small pe-3">
+                      <%= link_to category_task_path(task.category, task), class: "text-decoration-none fw-semibold text-dark" do %>
+                        <strong><%= task.task_name %></strong>
+                      <% end %><br>
+                      <span class="text-muted">from "<%= task.category.category_name %>"</span>
+                    </div>
+                    <div class="text-end" style="min-width: 120px;">
+                      <span class="badge <%= task.is_completed? ? 'text-bg-success' : 'text-bg-warning' %>">
+                        <%= task.is_completed? ? 'complete' : 'In progress' %>
+                      </span>
+                      <div class="small text-muted">Priority: <span><%= task.priority %></span></div>
+                      <div class="small text-muted"><span><%= task.due_date.strftime("%d-%b-%Y") %></span></div>
+                    </div>
                   </div>
-                </div>
-              <% end %>
-            </div>
-          <% else %>
-            <p class="text-muted mt-2">No tasks due today 🎉</p>
-          <% end %>
-        </div>
-
-        <div class="w-100 px-3 mt-4 pt-4">
-          <h5 class="fw-bold glowing-text">Overdue Tasks</h5>
-
-          <% if @overdue_tasks.any? %>
-            <div class="d-flex flex-column gap-2 mt-2">
-              <% @overdue_tasks.sort_by(&:priority).each do |task| %>
-                <div class="p-3 border rounded shadow-sm bg-light d-flex justify-content-between align-items-start">
-                  <div class="small pe-3">
-                    <%= link_to category_task_path(task.category, task), class: "text-decoration-none fw-semibold text-dark" do %>
-                      <strong><%= task.task_name %></strong>
-                    <% end %><br>
-                    <span class="text-muted">from "<%= task.category.category_name %>"</span>
-                  </div>
-                  <div class="text-end" style="min-width: 120px;">
-                    <span class="badge <%= task.is_completed? ? 'bg-success' : 'bg-danger' %>">
-                      <%= task.is_completed? ? 'complete' : 'not complete' %>
-                    </span>
-                    <div><span class="small text-muted"><%= task.due_date.strftime("%d-%b-%Y") %></span></div>
-                    <div class="small text-muted">Priority: <span><%= task.priority %></span></div>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% else %>
-            <p class="text-muted mt-2">No overdue tasks 🎉</p>
-          <% end %>
-        </div>
-        <div class="px-3 mt-5 d-flex flex-column gap-3 align-items-start">
-          <%= link_to 'Create New Category', new_category_path, class: "btn btn-info btn-md" %>
-          <%= link_to "Sign out", destroy_user_session_path,
-                      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave?" },
-                      class: "btn btn-outline-danger btn-sm" %>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-muted mt-2">No overdue tasks 🎉</p>
+            <% end %>
+          </div>
+          <div class="px-3 mt-5 d-flex justify-content-between align-items-start w-100">
+            <%= link_to "Create New Category", new_category_path,
+                        class: "btn btn-primary btn-md" %>
+            <%= link_to "Sign out", destroy_user_session_path,
+                        data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave?" },
+                        class: "btn fw-bold btn btn-outline-danger" %>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-9">
-      <div class="row row-cols-1 row-cols-md-1 g-4">
+    <div class="col-lg-7 ps-5 ms-5" style="margin-top: -33px;">
+      <div class="row row-cols-1 row-cols-md-1 g-4 px-4">
         <%= render current_user.categories %>
       </div>
     </div>

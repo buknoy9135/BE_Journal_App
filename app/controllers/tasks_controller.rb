@@ -20,6 +20,7 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to category_task_path(@category, @task), notice: "Task successfully created."
     else
+      flash.now[:alert] = "Failed to create task. Please check the errors."
       render :new, status: :unprocessable_entity
     end
   end
@@ -31,6 +32,7 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to category_task_path(@category, @task), notice: "Task successfully updated."
     else
+      flash.now[:alert] = "Failed to update task. Please check the errors."
       render :edit, status: :unprocessable_entity
     end
   end

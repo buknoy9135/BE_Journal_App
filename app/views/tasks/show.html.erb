@@ -1,8 +1,21 @@
 <h2><%= @task.task_name %></h2>
 
 <p><strong>Description:</strong> <%= @task.description %></p>
+<p><strong>Category:</strong> <%= @task.category.category_name %></p>
 <p><strong>Due date:</strong> <%= @task.due_date || "None" %></p>
 <p><strong>Priority:</strong> <%= @task.priority || "N/A" %></p>
+<p><strong>Status:</strong> <%= @task.is_completed ? "Completed" : "Not Completed" %></p>
+<p><strong>Created on:</strong> <%= @task.created_at.strftime("%B %d, %Y") %></p>
+<p><strong>Last updated:</strong> <%= @task.updated_at.strftime("%B %d, %Y")%></p>
+<p>
+  <strong>Owner Name:</strong><br>
+  <%= "#{current_user.first_name} #{current_user.last_name}" %>
+</p>
+
+<p>
+  <strong>Owner email:</strong><br>
+  <%= current_user.email %>
+</p>
 
 <%= link_to "Edit", edit_category_task_path(@category, @task), class: "text-decoration-none" %> |
 <%= link_to "Delete", category_task_path(@category, @task), data: {

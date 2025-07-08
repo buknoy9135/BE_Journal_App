@@ -27,7 +27,8 @@ class CategoriesController < ApplicationController
     if @category.save
       redirect_to categories_path, notice: "Category was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      flash.now[:alert] = "Failed to create category. Please check the errors."
+    render :new, status: :unprocessable_entity
     end
   end
 
@@ -37,6 +38,7 @@ class CategoriesController < ApplicationController
     if @category.update(category_params)
       redirect_to category_path(@category), notice: "Category was successfully updated."
     else
+      flash.now[:alert] = "Failed to update category. Please check the errors."
       render :edit, status: :unprocessable_entity
     end
   end

@@ -17,27 +17,45 @@
   </td>
   <td>
     <% if task.is_completed? %>
-      <span class="badge bg-success">Complete</span>
+      <span class="badge text-bg-success">Complete</span>
     <% else %>
-      <span class="badge bg-danger">Not Complete</span>
+      <span class="badge text-bg-warning">In progress</span>
     <% end %>
   </td>
   <td>
-    <%= link_to category_task_path(task.category, task), class: "text-decoration-none" do %>
+    <%= link_to category_task_path(task.category, task),
+                class: "text-decoration-none",
+                data: { bs_toggle: "tooltip" },
+                title: "View Task" do %>
       <i class="bi bi-eye fs-6"></i>
     <% end %>
-    <%= link_to edit_category_task_path(task.category, task), class: "text-decoration-none" do %>
-      <i class="bi bi-pencil fs-6 text-warning"></i>
+
+    <%= link_to edit_category_task_path(task.category, task),
+                class: "text-decoration-none",
+                data: { bs_toggle: "tooltip" },
+                title: "Edit Task" do %>
+      <i class="bi bi-pencil fs-6 text-secondary"></i>
     <% end %>
-    <%= link_to category_task_path(task.category, task),class: "text-decoration-none", data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } do %>
+
+    <%= link_to category_task_path(task.category, task),
+                class: "text-decoration-none",
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?",
+                  bs_toggle: "tooltip"
+                },
+                title: "Delete Task" do %>
       <i class="bi bi-trash fs-6 text-danger"></i>
     <% end %>
+
     <%= link_to toggle_complete_category_task_path(task.category, task),
-            data: { turbo_method: :patch, turbo_confirm: "Are you sure?" },
-            class: "text-decoration-none ms-2" do %>
+                data: {
+                  turbo_method: :patch,
+                  turbo_confirm: "Are you sure?",
+                  bs_toggle: "tooltip"
+                },
+                title: (task.is_completed? ? "Mark as Incomplete" : "Mark as Complete"),
+                class: "text-decoration-none ms-2" do %>
       <i class="bi <%= task.is_completed? ? 'bi-toggle-on text-success' : 'bi-toggle-off text-muted' %> fs-5"></i>
     <% end %>
   </td>
