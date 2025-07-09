@@ -1,56 +1,70 @@
-<h2>Category Details</h2>
+<div class="container mt-5">
+  <div class="card border border-2 border-primary shadow-sm rounded-4">
+    <div class="card-body">
+      <h2 class="card-title mb-4 text-primary">📁 Category Details</h2>
 
-<p>
-  <strong>Name:</strong><br>
-  <%= @category.category_name %>
-</p>
+      <div class="mb-3">
+        <strong>Name:</strong><br>
+        <span class="text-muted"><%= @category.category_name %></span>
+      </div>
 
-<p>
-  <strong>Description:</strong><br>
-  <%= @category.description %>
-</p>
+      <div class="mb-3">
+        <strong>Description:</strong><br>
+        <span class="text-muted"><%= @category.description %></span>
+      </div>
 
-<p>
-  <strong>Owner Name:</strong><br>
-  <%= "#{current_user.first_name} #{current_user.last_name}" %>
-</p>
+      <div class="mb-3">
+        <strong>Owner Name:</strong><br>
+        <span class="text-muted"><%= "#{current_user.first_name} #{current_user.last_name}" %></span>
+      </div>
 
-<p>
-  <strong>Owner email:</strong><br>
-  <%= current_user.email %>
-</p>
+      <div class="mb-3">
+        <strong>Owner Email:</strong><br>
+        <span class="text-muted"><%= current_user.email %></span>
+      </div>
 
-<p>
-  <strong>Created on:</strong><br>
-  <%= @category.created_at.strftime("%B %d, %Y") %>
-</p>
+      <div class="mb-3">
+        <strong>Created on:</strong><br>
+        <span class="text-muted"><%= @category.created_at.strftime("%B %d, %Y %I:%M %p") %></span>
+      </div>
 
-<p>
-  <strong>Last updated on:</strong><br>
-  <%= @category.updated_at.strftime("%B %d, %Y") %>
-</p>
+      <div class="mb-4">
+        <strong>Last updated on:</strong><br>
+        <span class="text-muted"><%= @category.updated_at.strftime("%B %d, %Y %I:%M %p") %></span>
+      </div>
 
-<% if @tasks.any? %>
-  <h2>All Tasks</h2>
-  <table>
-    <tr>
-      <th>Task</th>
-      <th>Description</th>
-      <th>Due Date</th>
-      <th>Priority</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  <%= render @tasks %>
-  </table>
-<% else %>
-  <p>No task yet for this category</p>
-<% end %>
+      <% if @tasks.any? %>
+        <h4 class="text-primary">📝 Tasks</h4>
+        <div class="table-responsive mt-3">
+          <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Task</th>
+                <th>Description</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render @tasks %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p class="text-muted mt-3">No task yet for this category.</p>
+      <% end %>
 
-<%= link_to 'Edit', edit_category_path(@category), class: "text-decoration-none" %> |
-<%= link_to "Delete", category_path(@category), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  }, class: "text-decoration-none" %> |
-<%= link_to 'Create New Task', new_category_task_path(@category), class: "text-decoration-none" %> |
-<%= link_to 'Back to Dashboard', categories_path, class: "text-decoration-none" %>
+      <div class="mt-4 d-flex flex-wrap gap-2">
+        <%= link_to '✏️ Edit', edit_category_path(@category), class: "btn btn-outline-primary btn-sm" %>
+        <%= link_to "🗑️ Delete", category_path(@category), data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure?"
+            }, class: "btn btn-outline-danger btn-sm" %>
+        <%= link_to '➕ Create New Task', new_category_task_path(@category), class: "btn btn-primary btn-sm" %>
+        <%= link_to '⬅️ Back to Dashboard', categories_path, class: "btn btn-secondary btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,31 +1,64 @@
-<h2><%= @task.task_name %></h2>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow border-primary">
+        <div class="card-body">
+          <h2 class="card-title text-primary fw-bold mb-4">
+            <%= @task.task_name %>
+          </h2>
 
-<p><strong>Description:</strong> <%= @task.description %></p>
-<p><strong>Category:</strong> <%= @task.category.category_name %></p>
-<p><strong>Due date:</strong> <%= @task.due_date || "None" %></p>
-<p><strong>Priority:</strong> <%= @task.priority || "N/A" %></p>
-<p><strong>Status:</strong> <%= @task.is_completed ? "Completed" : "Not Completed" %></p>
-<p><strong>Created on:</strong> <%= @task.created_at.strftime("%B %d, %Y") %></p>
-<p><strong>Last updated:</strong> <%= @task.updated_at.strftime("%B %d, %Y")%></p>
-<p>
-  <strong>Owner Name:</strong><br>
-  <%= "#{current_user.first_name} #{current_user.last_name}" %>
-</p>
+          <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item">
+              <strong>Description:</strong> <%= @task.description %>
+            </li>
+            <li class="list-group-item">
+              <strong>Category:</strong> <%= @task.category.category_name %>
+            </li>
+            <li class="list-group-item">
+              <strong>Due Date:</strong> <%= @task.due_date || "None" %>
+            </li>
+            <li class="list-group-item">
+              <strong>Priority:</strong> <%= @task.priority || "N/A" %>
+            </li>
+            <li class="list-group-item">
+              <strong>Status:</strong>
+              <span class="badge <%= @task.is_completed? ? 'bg-success' : 'bg-warning text-dark' %>">
+                <%= @task.is_completed ? "Completed" : "Not Completed" %>
+              </span>
+            </li>
+            <li class="list-group-item">
+              <strong>Created on:</strong> <%= @task.created_at.strftime("%B %d, %Y %I:%M %p") %>
+            </li>
+            <li class="list-group-item">
+              <strong>Last updated:</strong> <%= @task.updated_at.strftime("%B %d, %Y %I:%M %p") %>
+            </li>
+            <li class="list-group-item">
+              <strong>Owner Name:</strong> <%= "#{current_user.first_name} #{current_user.last_name}" %>
+            </li>
+            <li class="list-group-item">
+              <strong>Owner Email:</strong> <%= current_user.email %>
+            </li>
+          </ul>
 
-<p>
-  <strong>Owner email:</strong><br>
-  <%= current_user.email %>
-</p>
+          <div class="d-flex flex-wrap gap-2">
+            <%= link_to "Edit", edit_category_task_path(@category, @task), class: "btn btn-outline-primary" %>
 
-<%= link_to "Edit", edit_category_task_path(@category, @task), class: "text-decoration-none" %> |
-<%= link_to "Delete", category_task_path(@category, @task), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  }, class: "text-decoration-none" %> |
-<%= link_to toggle_complete_category_task_path(@task.category, @task),
-            data: { turbo_method: :patch, turbo_confirm: "Are you sure?" },
-            class: "text-decoration-none ms-2" do %>
-  <%= @task.is_completed? ? 'Mark as Incomplete' : 'Mark as Complete' %> |
-<% end %>
-<%= link_to "Back to Tasks", category_tasks_path(@category), class: "text-decoration-none" %> |
-<%= link_to 'Back to Dashboard', categories_path, class: "text-decoration-none" %>
+            <%= link_to "Delete", category_task_path(@category, @task),
+                        data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                        class: "btn btn-outline-danger" %>
+
+            <%= link_to toggle_complete_category_task_path(@category, @task),
+                        data: { turbo_method: :patch, turbo_confirm: "Are you sure?" },
+                        class: "btn btn-outline-warning" do %>
+              <%= @task.is_completed? ? 'Mark as Incomplete' : 'Mark as Complete' %>
+            <% end %>
+          </div>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-between mt-3">
+          <%= link_to "Back to Tasks", category_tasks_path(@category), class: "btn btn-secondary" %>
+          <%= link_to "Back to Dashboard", categories_path, class: "btn btn-outline-secondary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,17 @@
-<h2>New Task</h2>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!--
+      <h2 class="fw-bold mb-4 text-primary">New Task</h2>
+      -->
 
-<%= render 'form', category: @category, task: @task %>
+      <%= render 'form', category: @category, task: @task %>
 
-<%= link_to "Back", category_path(@category), class: "text-decoration-none" %>
+      <!--
+      <div class="text-end mt-3">
+        <%= link_to "Back", category_path(@category), class: "btn btn-outline-secondary" %>
+      </div>
+      -->
+    </div>
+  </div>
+</div>

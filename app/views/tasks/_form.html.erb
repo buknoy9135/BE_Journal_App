@@ -1,32 +1,48 @@
-<%= form_with model: [category, task] do |form| %>
-  <p>
-    <%= form.label :task_name %><br>
-    <%= form.text_field :task_name, placeholder: "Add task here" %>
-    <% task.errors.full_messages_for(:task_name).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </p>
+<div class="container mt-4 d-flex justify-content-center">
+  <div class="card shadow border-primary" style="width: 50rem; max-width: 100%;">
+    <div class="card-body">
+      <h4 class="card-title mb-4">
+        <%= task.persisted? ? "Edit Task" : "Create New Task" %>
+      </h4>
 
-  <p>
-    <%= form.label :description %><br>
-    <%= form.text_area :description %>
-    <% task.errors.full_messages_for(:description).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </p>
+      <%= form_with model: [category, task], class: "needs-validation" do |form| %>
+        <div class="mb-3">
+          <%= form.label :task_name, class: "form-label" %>
+          <%= form.text_field :task_name, class: "form-control", placeholder: "Add task here" %>
+          <% task.errors.full_messages_for(:task_name).each do |message| %>
+            <div class="text-danger small mt-1"><%= message %></div>
+          <% end %>
+        </div>
 
-  <p>
-    <%= form.label :due_date %><br>
-    <%= form.date_field :due_date, placeholder: "optional" %>
-    <% task.errors.full_messages_for(:due_date).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </p>
+        <div class="mb-3">
+          <%= form.label :description, class: "form-label" %>
+          <%= form.text_area :description, class: "form-control", rows: 3 %>
+          <% task.errors.full_messages_for(:description).each do |message| %>
+            <div class="text-danger small mt-1"><%= message %></div>
+          <% end %>
+        </div>
 
-  <p>
-    <%= form.label :priority %><br>
-    <%= form.select :priority, Task.priorities.keys.map { |p| [p.titleize, p] }, prompt: "Select priority" %>
-  </p>
+        <div class="mb-3">
+          <%= form.label :due_date, class: "form-label" %>
+          <%= form.date_field :due_date, class: "form-control" %>
+          <% task.errors.full_messages_for(:due_date).each do |message| %>
+            <div class="text-danger small mt-1"><%= message %></div>
+          <% end %>
+        </div>
 
-  <p><%= form.submit %></p>
-<% end %>
+        <div class="mb-4">
+          <%= form.label :priority, class: "form-label" %>
+          <%= form.select :priority,
+                          Task.priorities.keys.map { |p| [p.titleize, p] },
+                          { prompt: "Select priority" },
+                          class: "form-select" %>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <%= form.submit task.persisted? ? "Update Task" : "Create Task", class: "btn btn-primary px-4" %>
+          <%= link_to "Cancel", category_path(category), class: "btn btn-outline-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
