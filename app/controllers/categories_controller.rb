@@ -1,12 +1,15 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category, only: [ :show, :edit, :update, :destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
     @categories = current_user.categories
     @todays_tasks = Task.joins(:category)
                         .where(categories: { user_id: current_user.id })
                         .where(due_date: Date.current, is_completed: false)
+                        .order(:priority)
     @overdue_tasks = Task.joins(:category)
                          .where(categories: { user_id: current_user.id })
                          .where("due_date < ? AND is_completed = ?", Date.current, false)
@@ -56,5 +59,14 @@ class CategoriesController < ApplicationController
 
   def category_params
     params.require(:category).permit(:category_name, :description)
+  end
+
+  def record_not_found
+    redirect_to root_path, alert: "Record does not exist."
+    # render file: Rails.root.join("public/404.html"), status: :not_found, layout: false
+  end
+
+  def invalid_foreign_key
+    redirect_to @category, alert: "Unable to delete category. Category is still referenced to task(s)."
   end
 end

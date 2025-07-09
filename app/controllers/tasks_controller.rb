@@ -2,6 +2,8 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category
   before_action :set_task, only: [ :show, :edit, :update, :destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
     @tasks = @category.tasks
@@ -61,5 +63,15 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:task_name, :description, :due_date, :priority, :is_completed)
+  end
+
+  def record_not_found
+    redirect_to category_tasks_path(@category), alert: "Record does not exist."
+    # redirect_back fallback_location: root_path, alert: "Record does not exist."
+    # render file: Rails.root.join("public/404.html"), status: :not_found, layout: false
+  end
+
+  def invalid_foreign_key
+    redirect_to @category, alert: "Unable to delete category. Category is still referenced to task(s)."
   end
 end

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "errors/not_found"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -19,4 +20,7 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # for error handling of routes
+  match "*unmatched", to: "errors#not_found", via: :all
 end
